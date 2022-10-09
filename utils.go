@@ -10,8 +10,8 @@ type loggerState struct {
 	state bool
 }
 
-func formatLogString(owner string, data ...any) string {
-	return fmt.Sprintf(format, time.Now().Format("2006-01-02T15:04:05.999"), owner, data)
+func formatLogString(owner string, message string) string {
+	return fmt.Sprintf(format, time.Now().Format("2006-01-02T15:04:05.999"), owner, message)
 }
 
 func formattedName(owner string) string {

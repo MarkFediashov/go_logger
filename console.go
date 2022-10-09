@@ -12,9 +12,9 @@ type consoleLogger struct {
 	loggerState
 }
 
-func (c *consoleLogger) Log(data ...any) {
+func (c *consoleLogger) Log(message string) {
 	if c.state {
-		fmt.Print(formatLogString(c.owner, data))
+		fmt.Print(formatLogString(c.owner, message))
 	}
 }
 

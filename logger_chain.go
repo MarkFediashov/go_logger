@@ -40,9 +40,9 @@ func NewChainedLogger(owner string, fileName *string, enableConsole bool, enable
 	return &ChainedLogger{loggers: loggers}, nil
 }
 
-func (c *ChainedLogger) Log(data ...any) {
+func (c *ChainedLogger) Log(message string) {
 	for _, l := range c.loggers {
-		l.Log(data)
+		l.Log(message)
 	}
 }
 

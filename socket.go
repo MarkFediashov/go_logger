@@ -22,7 +22,10 @@ func newSocketLogger(owner string, port int, enableSocket bool) (*socketLogger, 
 	if err != nil {
 		return nil, err
 	}
-	result := &socketLogger{loggerState: loggerState{owner: owner, state: enableSocket}, listener: listener, port: port}
+	result := &socketLogger{loggerState: loggerState{owner: owner, state: enableSocket}, listener: listener, port: port,
+		dispose:  make(chan struct{}),
+		connChan: make(chan net.Conn),
+	}
 
 	go result.acceptByChannel()
 	go result.acceptConnectionsBackground()
@@ -33,7 +36,7 @@ func newSocketLogger(owner string, port int, enableSocket bool) (*socketLogger, 
 func (s *socketLogger) acceptByChannel() {
 	for {
 		connection, err := s.listener.Accept()
-		if err != nil {
+		if err == nil {
 			s.connChan <- connection
 		} else {
 			close(s.connChan)
@@ -58,12 +61,12 @@ func (s *socketLogger) acceptConnectionsBackground() {
 	}
 }
 
-func (s *socketLogger) Log(data ...any) {
+func (s *socketLogger) Log(message string) {
 	if s.state {
-		row := formatLogString(s.owner, data)
+		row := formatLogString(s.owner, message)
 		bytes := []byte(row)
-		for _, s := range s.clients {
-			go s.Write(bytes)
+		for _, c := range s.clients {
+			go c.Write(bytes)
 		}
 	}
 }

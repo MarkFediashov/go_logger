@@ -29,9 +29,9 @@ func newFileLogger(fileName string, owner string) *fileLogger {
 	}
 }
 
-func (logger *fileLogger) Log(data ...any) {
+func (logger *fileLogger) Log(message string) {
 	if logger.state {
-		record := fmt.Sprintf(format, time.Now().Format("2006-01-02T15:04:05.999"), logger.owner, data)
+		record := fmt.Sprintf(format, time.Now().Format("2006-01-02T15:04:05.999"), logger.owner, message)
 		go logger.writeGoroutine(record)
 	}
 }

@@ -4,7 +4,7 @@ const format = "|%s| [%-15s]: %v\n"
 const sourceFieldLength = 15
 
 type Logger interface {
-	Log(data ...any)
+	Log(string)
 	SetWriteState(bool)
 	Dispose()
 }
