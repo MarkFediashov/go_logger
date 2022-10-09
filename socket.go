@@ -61,9 +61,25 @@ func (s *socketLogger) acceptConnectionsBackground() {
 	}
 }
 
-func (s *socketLogger) Log(message string) {
+func (s *socketLogger) Info(message string) {
+	s.logInner(INFO, message)
+}
+
+func (s *socketLogger) Debug(message string) {
+	s.logInner(DEBUG, message)
+}
+
+func (s *socketLogger) Warning(message string) {
+	s.logInner(WARNING, message)
+}
+
+func (s *socketLogger) Error(message string) {
+	s.logInner(ERROR, message)
+}
+
+func (s *socketLogger) logInner(level logLevel, message string) {
 	if s.state {
-		row := formatLogString(s.owner, message)
+		row := formatLogString(level, s.owner, message)
 		bytes := []byte(row)
 		for _, c := range s.clients {
 			go c.Write(bytes)

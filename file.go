@@ -1,10 +1,9 @@
 package logger
 
 import (
-	"fmt"
 	"os"
 	"sync"
-	"time"
+	"syscall"
 )
 
 type fileLogger struct {
@@ -15,7 +14,7 @@ type fileLogger struct {
 }
 
 func newFileLogger(fileName string, owner string) *fileLogger {
-	file, err := os.OpenFile(fileName, os.O_CREATE|os.O_APPEND, os.ModeAppend)
+	file, err := os.OpenFile(fileName, os.O_CREATE|syscall.O_APPEND, 0777)
 	if err != nil {
 		return nil
 	}
@@ -29,9 +28,25 @@ func newFileLogger(fileName string, owner string) *fileLogger {
 	}
 }
 
-func (logger *fileLogger) Log(message string) {
+func (logger *fileLogger) Info(message string) {
+	logger.logInner(INFO, message)
+}
+
+func (logger *fileLogger) Debug(message string) {
+	logger.logInner(DEBUG, message)
+}
+
+func (logger *fileLogger) Warning(message string) {
+	logger.logInner(WARNING, message)
+}
+
+func (logger *fileLogger) Error(message string) {
+	logger.logInner(ERROR, message)
+}
+
+func (logger *fileLogger) logInner(level logLevel, message string) {
 	if logger.state {
-		record := fmt.Sprintf(format, time.Now().Format("2006-01-02T15:04:05.999"), logger.owner, message)
+		record := formatLogString(level, logger.owner, message)
 		go logger.writeGoroutine(record)
 	}
 }

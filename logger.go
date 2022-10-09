@@ -1,10 +1,14 @@
 package logger
 
-const format = "|%s| [%-15s]: %v\n"
+const format = "|%-23s| %-2s [%-15s]: %v\n"
 const sourceFieldLength = 15
 
 type Logger interface {
-	Log(string)
+	Debug(string)
+	Warning(string)
+	Error(string)
+	Info(string)
+
 	SetWriteState(bool)
 	Dispose()
 }

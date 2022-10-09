@@ -10,8 +10,17 @@ type loggerState struct {
 	state bool
 }
 
-func formatLogString(owner string, message string) string {
-	return fmt.Sprintf(format, time.Now().Format("2006-01-02T15:04:05.999"), owner, message)
+type logLevel string
+
+const (
+	DEBUG   logLevel = "DEBUG"
+	INFO    logLevel = "INFO"
+	WARNING logLevel = "WARNING"
+	ERROR   logLevel = "ERROR"
+)
+
+func formatLogString(level logLevel, owner string, message string) string {
+	return fmt.Sprintf(format, time.Now().Format("2006-01-02T15:04:05.999"), level, owner, message)
 }
 
 func formattedName(owner string) string {

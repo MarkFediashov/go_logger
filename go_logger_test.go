@@ -11,7 +11,7 @@ import (
 func Test1(t *testing.T) {
 	filename := "test.log"
 	port := 47891
-	logger, err := NewChainedLogger("Test", &filename, true, false, true, port)
+	logger, err := NewChainedLogger("Test", &filename, true, true, true, port)
 	if err != nil {
 		fmt.Println(err)
 		t.Failed()
@@ -26,10 +26,10 @@ func Test1(t *testing.T) {
 	}
 
 	buffer := make([]byte, 1024)
-	logger.Log("Test)")
-	data, err := connection.Read(buffer)
-	if err != nil {
-		fmt.Println(string(rune(data)))
+	logger.Info("Test)")
+	_, err = connection.Read(buffer)
+	if err == nil {
+		fmt.Println(string(buffer))
 	}
 	time.Sleep(2)
 }
