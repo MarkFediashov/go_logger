@@ -2,7 +2,6 @@ package logger
 
 import (
 	"fmt"
-	"time"
 )
 
 func NewConsoleLogger(owner string) Logger {
@@ -15,7 +14,7 @@ type consoleLogger struct {
 
 func (c *consoleLogger) Log(data ...any) {
 	if c.state {
-		fmt.Printf(format, time.Now().Format("2006-01-02T15:04:05.999"), c.owner, data)
+		fmt.Print(formatLogString(c.owner, data))
 	}
 }
 

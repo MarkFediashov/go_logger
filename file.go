@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"sync"
+	"time"
 )
 
 type fileLogger struct {
@@ -30,7 +31,7 @@ func newFileLogger(fileName string, owner string) *fileLogger {
 
 func (logger *fileLogger) Log(data ...any) {
 	if logger.state {
-		record := fmt.Sprintf(format, data...)
+		record := fmt.Sprintf(format, time.Now().Format("2006-01-02T15:04:05.999"), logger.owner, data)
 		go logger.writeGoroutine(record)
 	}
 }
