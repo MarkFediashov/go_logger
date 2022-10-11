@@ -1,4 +1,4 @@
-package logger
+package go_logger
 
 const format = "|%-23s| %-6s [%-15s]: %v\n"
 const sourceFieldLength = 15
