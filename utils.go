@@ -2,6 +2,7 @@ package go_logger
 
 import (
 	"fmt"
+	"strings"
 	"time"
 )
 
@@ -21,6 +22,17 @@ const (
 
 func formatLogString(level logLevel, owner string, message string) string {
 	return fmt.Sprintf(format, time.Now().Format("2006-01-02T15:04:05.999"), level, owner, message)
+}
+
+func LogJoin(logs ...string) string {
+	builder := strings.Builder{}
+	for i, l := range logs {
+		builder.WriteString(l)
+		if i != len(logs)-1 {
+			builder.WriteString(" ")
+		}
+	}
+	return builder.String()
 }
 
 func formattedName(owner string) string {

@@ -27,6 +27,9 @@ func Test1(t *testing.T) {
 
 	buffer := make([]byte, 1024)
 	logger.Warning("Test)")
+	logger.Error("Test)")
+	logger.Debug("Test)")
+	logger.Info("Test)")
 	_, err = connection.Read(buffer)
 	if err == nil {
 		fmt.Println(string(buffer))
